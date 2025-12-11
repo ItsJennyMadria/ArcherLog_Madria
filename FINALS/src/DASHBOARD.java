@@ -164,50 +164,49 @@ public class DASHBOARD extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
- String id = ID.getText();
- String name = NAME.getText();
-       int key = 0;
+String id = ID.getText();
+String name = NAME.getText();
+
+if (!id.matches("\\d{8}")) {
+    JOptionPane.showMessageDialog(null, "Invalid ID: Must be exactly 8 numbers.", "Input Error", JOptionPane.ERROR_MESSAGE);
+    return; // Stop the code here
+}
+
+if (!name.matches("[a-zA-Z ]+")) {
+    JOptionPane.showMessageDialog(null, "Invalid Name: Must contain only letters and spaces (no numbers).", "Input Error", JOptionPane.ERROR_MESSAGE);
+    return; // Stop the code here
+}
+
+
+int key = 0;
 
 String encryptedPass = "";
-// Encrypt the password input (`name`)
 for (int i = 0; i < name.length(); i++) {
-    char ch = name.charAt(i);
-    // This is a simple Caesar cipher (shift by 3)
+    char ch = name.charAt(i); 
     encryptedPass += (char) (ch + key);
 }
 
-// NOTE: The file path has an incorrect extra quote. 
-// I've corrected it here:
+
 String filePath = "C:\\Users\\Administrator\\Documents\\DSA_IT24A\\ArcherLog_forkRepo\\text.txt";
 
 try {
-    // *** MODIFIED LOGIC START ***
-    
-    // 1. Authentication is assumed to be successful (authenticated = true).
-    boolean authenticated = true; 
-
-    // 2. The file reading and authentication loop is removed.
+       boolean authenticated = true; 
 
     if (authenticated) {
-        // Log the user in
         MAINMENU dash = new MAINMENU();
         dash.setVisible(true);
         dispose(); 
         
-        // 3. Register the new user/password AFTER successful "login"
-        // This registers the user even if they are already in the file.
-        FileWriter writer = new FileWriter(filePath, true);
-        writer.write( id + "," + encryptedPass + "\n");
+       
+        FileWriter writer = new FileWriter(filePath); 
+        writer.write(id + "," + encryptedPass + "\n");
         writer.close();
         
     } else {
-        // This part is now unreachable since authenticated is set to true, 
-        // but kept for completeness based on the original structure.
-        JOptionPane.showMessageDialog(null, "Invalid username or password", "Login Error", JOptionPane.ERROR_MESSAGE);
+               JOptionPane.showMessageDialog(null, "Invalid name or id", "Login Error", JOptionPane.ERROR_MESSAGE);
     }
     
-    // *** MODIFIED LOGIC END ***
-
+   
 } catch (IOException e) {
     System.out.println("ERROR");
     e.printStackTrace();
@@ -216,6 +215,7 @@ try {
 
     private void IDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IDActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_IDActionPerformed
 
     private void NAMEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NAMEActionPerformed
