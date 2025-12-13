@@ -90,7 +90,7 @@ btnRegister.addActionListener(e -> {
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel3.setText("Student Information");
 
-        jLabel4.setText("Please re-enter your student ID:");
+        jLabel4.setText("Please enter your student ID:");
 
         jLabel5.setText("Tap \"Register\" to confirm");
 
@@ -209,12 +209,12 @@ btnRegister.addActionListener(e -> {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
-       
+
         LIST dash = new LIST();
         dash.setVisible(true);
-        dispose(); 
+        dispose();
 
-// TODO add your handling code here:
+        // TODO add your handling code here:
     }//GEN-LAST:event_btnRegisterActionPerformed
 
     /**

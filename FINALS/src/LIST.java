@@ -9,6 +9,27 @@
  */
 public class LIST extends javax.swing.JFrame {
 
+    private LinkedList<main_menu.Student> registrantsList;
+
+    public LIST(LinkedList<main_menu.Student> registrantsList) {
+        this.registrantsList = registrantsList;
+        initComponents();
+        displayStudents();
+    }
+
+    private void displayStudents() {
+        StringBuilder sb = new StringBuilder();
+        for (main_menu.Student s : registrantsList) {
+            sb.append("ID: ").append(s.studentID)
+              .append("   | Time: ").append(s.registrationTime)
+              .append("\n");
+        }
+
+        // Show it in a text area (you need to add a JTextArea in LIST form)
+        studentTextArea.setText(sb.toString());
+    }
+}
+
     /**
      * Creates new form LIST
      */
@@ -77,7 +98,7 @@ public class LIST extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 346, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 300, Short.MAX_VALUE)
                 .addComponent(Return)
                 .addGap(14, 14, 14))
         );
@@ -97,7 +118,7 @@ public class LIST extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void ReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReturnActionPerformed
-main_menu dash = new main_menu();
+DASHBOARD dash = new DASHBOARD();
         dash.setVisible(true);
         dispose();         // TODO add your handling code here:
     }//GEN-LAST:event_ReturnActionPerformed
