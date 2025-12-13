@@ -186,7 +186,7 @@
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel4">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Please re-enter your student ID:"/>
+                    <Property name="text" type="java.lang.String" value="Please enter your student ID:"/>
                   </Properties>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel5">

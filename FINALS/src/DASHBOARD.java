@@ -164,18 +164,19 @@ public class DASHBOARD extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-String id = ID.getText();
 String name = NAME.getText();
-
-if (!id.matches("\\d{8}")) {
-    JOptionPane.showMessageDialog(null, "Invalid ID: Must be exactly 8 numbers.", "Input Error", JOptionPane.ERROR_MESSAGE);
-    return; // Stop the code here
-}
+        String id = ID.getText();
 
 if (!name.matches("[a-zA-Z ]+")) {
     JOptionPane.showMessageDialog(null, "Invalid Name: Must contain only letters and spaces (no numbers).", "Input Error", JOptionPane.ERROR_MESSAGE);
-    return; // Stop the code here
+    return; 
 }
+if (!id.matches("\\d{8}")) {
+    JOptionPane.showMessageDialog(null, "Invalid ID: Must be exactly 8 numbers.", "Input Error", JOptionPane.ERROR_MESSAGE);
+    return; 
+}
+
+
 
 
 int key = 0;
