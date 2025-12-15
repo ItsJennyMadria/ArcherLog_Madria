@@ -1,7 +1,9 @@
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.LinkedList;
 import javax.swing.JOptionPane;
+import java.time.LocalDateTime;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -14,58 +16,91 @@ import javax.swing.JOptionPane;
  */
 public class main_menu extends javax.swing.JFrame {
     // For storing registered students
-private LinkedList<Student> registrantsList = new LinkedList<>();
-private HashMap<String, Student> studentMap = new HashMap<>();
-
-private LIST listFrame = null; // Reference to the list window
-
-
-public class Student {
-    String studentID;
-    LocalDateTime registrationTime;
-
-    public Student(String studentID, LocalDateTime registrationTime) {
-        this.studentID = studentID;
-        this.registrationTime = registrationTime;
-    }
+    private String loggedInID;
+    
+    public main_menu() {
+    initComponents();
 }
+
+
+private boolean isAlreadyRegistered(String id) {
+    try (BufferedReader reader = new BufferedReader(new FileReader("text.txt"))) {
+        String line;
+        while ((line = reader.readLine()) != null) {
+            if (line.trim().isEmpty()) continue; // skip empty lines
+            String[] parts = line.split(",", 2); // split into 2 parts only
+            if (parts.length > 0 && parts[0].equals(id)) {
+                return true;
+            }
+        }
+        
+    } catch (IOException e) {
+        // file may not exist yet — that's okay
+    }
+    return false;
+}
+
+
     /**
      * Creates new form main_menu
      */
-    public main_menu() {
-        initComponents();
-        
-btnRegisterStudent.addActionListener(e -> {
+public main_menu(String id) {
+    initComponents();
+    loggedInID = id; // store the logged-in ID
+
+    btnRegisterStudent.addActionListener(e -> registerStudent());
+}
+private void registerStudent() {
     String id = tfStudentIDRegister.getText().trim();
 
     if (id.isEmpty()) {
         JOptionPane.showMessageDialog(this, "Please enter your Student ID.");
         return;
-    }
+}
 
-    // Check if student already registered
-    if (studentMap.containsKey(id)) {
-        JOptionPane.showMessageDialog(this, "You have already registered for this event.");
+    // Check that the ID matches the logged-in ID
+    if (!id.equals(loggedInID)) {
+        JOptionPane.showMessageDialog(this, "You can only register with your own logged-in ID.");
         return;
     }
 
-    // Register the student
-    LocalDateTime now = LocalDateTime.now();
-    Student student = new Student(id, now);
-    registrantsList.add(student);
-    studentMap.put(id, student);
+    // Check if already registered
+    if (isAlreadyRegistered(id)) {
+        Object[] options = {"View List", "Return"};
+        int choice = JOptionPane.showOptionDialog(
+            this,
+            "You have already registered for this event.",
+            "Already Registered",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.INFORMATION_MESSAGE,
+            null,
+            options,
+            options[0]
+        );
+
+        if (choice == 0) { // View List
+            new LIST().setVisible(true);
+        } else { // Return
+            new DASHBOARD().setVisible(true);
+            dispose();
+        }
+        return;
+    }
+
+    // Register ID
+    try (FileWriter writer = new FileWriter("text.txt", true)) {
+        writer.write(id + "," + java.time.LocalDateTime.now() + "\n");
+    } catch (IOException ex) {
+        JOptionPane.showMessageDialog(this, "Failed to save registration.");
+        return;
+    }
 
     JOptionPane.showMessageDialog(this, "Registration successful!");
-
     tfStudentIDRegister.setText("");
+     this.dispose();
+}
 
-    // Refresh LIST if it is open
-    if (listFrame != null && listFrame.isDisplayable()) {
-        listFrame.displayStudents();
-    }
-});
-
-    }
+ 
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -217,14 +252,6 @@ btnRegisterStudent.addActionListener(e -> {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRegisterStudentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterStudentActionPerformed
-
-    if (listFrame == null || !listFrame.isDisplayable()) {
-    listFrame = new LIST(registrantsList); // Pass the actual list
-    listFrame.setVisible(true);
-} else {
-    listFrame.toFront(); // Bring the window to front if already open
-}
-
         // TODO add your handling code here:
     }//GEN-LAST:event_btnRegisterStudentActionPerformed
 

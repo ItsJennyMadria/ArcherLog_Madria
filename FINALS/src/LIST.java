@@ -1,4 +1,6 @@
-import java.util.LinkedList;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -9,44 +11,45 @@ import java.util.LinkedList;
  * @author Administrator
  */
 public class LIST extends javax.swing.JFrame {
+public void displayStudents() {
+    StringBuilder sb = new StringBuilder();
 
-    private LinkedList<main_menu.Student> registrantsList;
+    try (BufferedReader reader = new BufferedReader(new FileReader("text.txt"))) {
+        String line;
+        while ((line = reader.readLine()) != null) {
+            if (line.trim().isEmpty()) continue; // skip empty lines
 
-    public LIST(LinkedList<main_menu.Student> registrantsList) {
-    this.registrantsList = registrantsList;
-    initComponents();
+            String[] parts = line.split(",", 2); // limit to 2 parts
+            sb.append("ID: ").append(parts[0]);
 
-    // Make text area read-only
-    taStudentList.setEditable(false);
+            if (parts.length > 1 && !parts[1].trim().isEmpty()) {
+                sb.append(" | Time: ").append(parts[1]);
+            } else {
+                sb.append(" | Time: (no timestamp)");
+            }
 
-    // Display current students
-    displayStudents();
+            sb.append("\n");
+        }
+    } catch (IOException e) {
+        sb.append("No registrations yet.");
+    }
 
-    // Refresh button updates the list
-    btnRefresh.addActionListener(e -> displayStudents());
+    taStudentList.setText(sb.toString());
 }
 
 
-    public void displayStudents() {
-        StringBuilder sb = new StringBuilder();
-        for (main_menu.Student s : registrantsList) {
-            sb.append("ID: ").append(s.studentID)
-              .append("   | Time: ").append(s.registrationTime)
-              .append("\n");
-        }
-
-        // Show it in a text area (you need to add a JTextArea in LIST form)
-        taStudentList.setText(sb.toString());
-    }
     
     
     /**
      * Creates new form LIST
      */
-   public LIST() {
-    this(new LinkedList<>());
+public LIST() {
+    initComponents();
+    jScrollPane1.setViewportView(taStudentList); // make sure the text area is shown properly
+    taStudentList.setEditable(false);
+    displayStudents();
+    btnRefresh.addActionListener(e -> displayStudents());
 }
-
 
     /**
      * This method is called from within the constructor to initialize the form.

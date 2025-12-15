@@ -2,12 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import javax.swing.JOptionPane;
-
 /**
  *
  * @author Administrator
@@ -191,54 +186,35 @@ private void loadLogo() {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-String name = tfStudentNameLogin.getText();
-        String id = tfStudentIDLogin.getText();
-
-if (!name.matches("[a-zA-Z ]+")) {
-    JOptionPane.showMessageDialog(null, "Invalid Name: Must contain only letters and spaces (no numbers).", "Input Error", JOptionPane.ERROR_MESSAGE);
-    return; 
-}
-if (!id.matches("\\d{8}")) {
-    JOptionPane.showMessageDialog(null, "Invalid ID: Must be exactly 8 numbers.", "Input Error", JOptionPane.ERROR_MESSAGE);
-    return; 
-}
+String name = tfStudentNameLogin.getText().trim();
+    String id = tfStudentIDLogin.getText().trim();
 
 
-
-
-int key = 0;
-
-String encryptedPass = "";
-for (int i = 0; i < name.length(); i++) {
-    char ch = name.charAt(i); 
-    encryptedPass += (char) (ch + key);
-}
-
-
-String filePath = "C:\\Users\\Administrator\\Documents\\DSA_IT24A\\ArcherLog_forkRepo\\text.txt";
-
-try {
-       boolean authenticated = true; 
-
-    if (authenticated) {
-        main_menu dash = new main_menu();
-        dash.setVisible(true);
-        dispose(); 
-        
-       
-        FileWriter writer = new FileWriter(filePath); 
-        writer.write(id + "," + encryptedPass + "\n");
-        writer.close();
-        
-    } else {
-               JOptionPane.showMessageDialog(null, "Invalid name or id", "Login Error", JOptionPane.ERROR_MESSAGE);
+// Validate name
+    if (!name.matches("[a-zA-Z ]+")) {
+        JOptionPane.showMessageDialog(
+            this,
+            "Invalid Name: Must contain only letters and spaces.",
+            "Input Error",
+            JOptionPane.ERROR_MESSAGE
+);
+       return;
     }
-    
-   
-} catch (IOException e) {
-    System.out.println("ERROR");
-    e.printStackTrace();
-}
+
+    // Validate ID
+    if (!id.matches("\\d{8}")) {
+        JOptionPane.showMessageDialog(
+            this,
+            "Invalid ID. Must be exactly 8 digits.",
+            "Input Error",
+            JOptionPane.ERROR_MESSAGE
+        );
+        return;
+    }
+// Assume authentication is successful
+    main_menu menu = new main_menu(id); // PASS LOGGED-IN ID
+    menu.setVisible(true);
+    dispose();
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void tfStudentIDLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfStudentIDLoginActionPerformed
